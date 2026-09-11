@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Manrope:wght@400;500;600;700;800&display=swap">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  :root{
+    --bg:oklch(0.15 0.02 260);
+    --bg-2:oklch(0.19 0.025 260);
+    --bg-3:oklch(0.24 0.025 260);
+    --line:oklch(0.4 0.02 260 / 0.35);
+    --ink:oklch(0.94 0.01 85);
+    --ink-dim:oklch(0.74 0.02 260);
+    --ink-faint:oklch(0.54 0.02 260);
+    --amber:oklch(0.78 0.14 70);
+    --amber-ink:oklch(0.2 0.03 70);
+    --amber-soft:oklch(0.78 0.14 70 / 0.16);
+    --violet:oklch(0.68 0.15 230);
+    --violet-soft:oklch(0.68 0.15 230 / 0.22);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;}
+  a{color:var(--amber);text-decoration:none;}
+  h1,h2{font-family:'Libre Caslon Display',serif;font-weight:400;margin:0;}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(30px,-24px) scale(1.06);}}
+  .navlink{color:var(--ink-dim);font-size:14px;font-weight:600;}
+  .navlink:hover{color:var(--ink);}
+  .btn-primary{background:var(--amber);color:var(--amber-ink);border:none;padding:15px 30px;border-radius:4px;font-weight:700;font-size:15px;cursor:pointer;font-family:'Manrope';transition:transform .15s;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--line);padding:15px 30px;border-radius:4px;font-weight:700;font-size:15px;cursor:pointer;font-family:'Manrope';}
+  .btn-icon{width:48px;height:48px;border-radius:4px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-dim);cursor:pointer;flex-shrink:0;}
+  .btn-icon:hover{color:var(--amber);border-color:var(--amber);}
+  .tag{border:1px solid var(--line);color:var(--ink-dim);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;}
+  .cover-hero{position:relative;width:100%;height:100%;border-radius:8px;transform:rotate(-2deg);box-shadow:0 50px 90px -30px oklch(0.08 0.02 230 / 0.85);transition:transform .5s;}
+  .cover-wrap:hover .cover-hero{transform:rotate(0deg) scale(1.02);}
+  .chapter-row{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--line);transition:background .15s;}
+  .chapter-row:hover{background:var(--bg-2);}
+  .card{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:transform .25s,border-color .25s;}
+  .card:hover{transform:translateY(-6px);border-color:var(--ink-faint);}
+  .star{color:var(--amber);}
+</style>
+</helmet>
+
+<div style="background:var(--bg);min-height:100vh;">
+
+  <nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:22px 64px;background:oklch(0.15 0.02 260 / 0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);">
+    <div style="display:flex;align-items:center;gap:48px;">
+      <span style="font-family:'Libre Caslon Display',serif;font-size:24px;letter-spacing:.02em;">DEPTH</span>
+      <div style="display:flex;gap:32px;">
+        <a href="#" class="navlink">Discover</a>
+        <a href="#" class="navlink" style="color:var(--ink);">Library</a>
+        <a href="#" class="navlink">Genres</a>
+        <a href="#" class="navlink">Rankings</a>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="#" class="navlink">Sign in</a>
+      <button class="btn-primary" style="padding:10px 22px;font-size:14px;">Get Started</button>
+    </div>
+  </nav>
+
+  <section style="position:relative;overflow:hidden;padding:64px 64px 60px;display:flex;gap:56px;border-bottom:1px solid var(--line);">
+    <div style="position:absolute;top:-160px;right:-140px;width:560px;height:560px;background:radial-gradient(circle,var(--violet-soft),transparent 70%);filter:blur(6px);animation:drift1 16s ease-in-out infinite;"></div>
+
+    <div class="cover-wrap" style="position:relative;width:300px;height:440px;flex-shrink:0;">
+      <div class="cover-hero" style="background:linear-gradient(150deg,oklch(0.55 0.14 230),oklch(0.24 0.09 230));display:flex;flex-direction:column;justify-content:flex-end;padding:28px;">
+        <div style="width:36px;height:2px;background:var(--amber);margin-bottom:14px;"></div>
+        <span style="font-family:'Libre Caslon Display';font-size:30px;line-height:1.1;color:oklch(0.97 0.01 230);">The Glass Orbit</span>
+      </div>
+    </div>
+
+    <div style="position:relative;flex:1;padding-top:8px;">
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <span class="tag">Sci-Fi</span>
+        <span class="tag">Space Opera</span>
+        <span class="tag">Slow Burn</span>
+      </div>
+      <h1 style="font-size:44px;margin-bottom:10px;">The Glass Orbit</h1>
+      <div style="font-size:15px;color:var(--ink-dim);margin-bottom:24px;">by <a href="#">Mira Voss</a></div>
+
+      <div style="display:flex;gap:32px;margin-bottom:24px;font-size:14px;color:var(--ink-dim);">
+        <span><span class="star">★</span> 4.8 <span style="color:var(--ink-faint);">(12.4k ratings)</span></span>
+        <span>2.1M reads</span>
+        <span>142 chapters</span>
+        <span style="color:var(--amber);font-weight:600;">Ongoing</span>
+      </div>
+
+      <p style="font-family:'Literata',serif;font-size:16px;line-height:1.7;color:var(--ink-dim);max-width:600px;margin:0 0 32px;">When the orbital station Meridian begins receiving transmissions from a version of itself that hasn't launched yet, engineer Kesia Okafor has ninety days to decide whether to trust a future she was never meant to see — before both timelines collapse into one.</p>
+
+      <div style="display:flex;gap:14px;">
+        <button class="btn-primary">Start Reading</button>
+        <button class="btn-secondary">Add to Library</button>
+        <span class="btn-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6c-1.7-1.7-4.5-1.7-6.2 0L12 7.2 9.4 4.6c-1.7-1.7-4.5-1.7-6.2 0-1.7 1.7-1.7 4.5 0 6.2L12 19.4l8.8-8.6c1.7-1.7 1.7-4.5 0-6.2z"/></svg>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:56px 64px;max-width:920px;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-size:26px;">Chapters</h2>
+      <span style="font-size:13px;color:var(--ink-faint);">142 total</span>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:6px;overflow:hidden;">
+      <div class="chapter-row">
+        <span style="font-family:'Literata';font-size:15px;"><span style="color:var(--ink-faint);margin-right:10px;">142</span>The Second Signal</span>
+        <span style="font-size:12px;color:var(--ink-faint);">2 days ago</span>
+      </div>
+      <div class="chapter-row">
+        <span style="font-family:'Literata';font-size:15px;"><span style="color:var(--ink-faint);margin-right:10px;">141</span>Nine Hours to Reentry</span>
+        <span style="font-size:12px;color:var(--ink-faint);">5 days ago</span>
+      </div>
+      <div class="chapter-row">
+        <span style="font-family:'Literata';font-size:15px;"><span style="color:var(--ink-faint);margin-right:10px;">140</span>What Kesia Knew</span>
+        <span style="font-size:12px;color:var(--ink-faint);">1 week ago</span>
+      </div>
+      <div class="chapter-row">
+        <span style="font-family:'Literata';font-size:15px;"><span style="color:var(--ink-faint);margin-right:10px;">12</span>The Signal Between Stars</span>
+        <span style="font-size:12px;color:var(--ink-faint);">4 months ago</span>
+      </div>
+      <div class="chapter-row" style="border-bottom:none;">
+        <span style="font-family:'Literata';font-size:15px;"><span style="color:var(--ink-faint);margin-right:10px;">1</span>Meridian Station</span>
+        <span style="font-size:12px;color:var(--ink-faint);">1 year ago</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px;">
+      <a href="#" style="font-size:14px;font-weight:700;">View all 142 chapters →</a>
+    </div>
+  </section>
+
+  <section style="padding:0 64px 80px;">
+    <h2 style="font-size:26px;margin-bottom:24px;">More like this</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;">
+      <div class="card">
+        <div style="height:180px;background:linear-gradient(150deg,oklch(0.5 0.14 300),oklch(0.26 0.09 300));"></div>
+        <div style="padding:14px;">
+          <div style="font-family:'Literata';font-size:14px;font-weight:600;margin-bottom:2px;">Static &amp; Starlight</div>
+          <div style="font-size:12px;color:var(--ink-faint);">Priya Anand</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="height:180px;background:linear-gradient(150deg,oklch(0.5 0.14 20),oklch(0.26 0.09 20));"></div>
+        <div style="padding:14px;">
+          <div style="font-family:'Literata';font-size:14px;font-weight:600;margin-bottom:2px;">Hollow Constellations</div>
+          <div style="font-size:12px;color:var(--ink-faint);">Marcus Vane</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="height:180px;background:linear-gradient(150deg,oklch(0.5 0.14 110),oklch(0.26 0.09 110));"></div>
+        <div style="padding:14px;">
+          <div style="font-family:'Literata';font-size:14px;font-weight:600;margin-bottom:2px;">The Cartographer's Debt</div>
+          <div style="font-size:12px;color:var(--ink-faint);">Elian Reyes</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="height:180px;background:linear-gradient(150deg,oklch(0.5 0.14 190),oklch(0.26 0.09 190));"></div>
+        <div style="padding:14px;">
+          <div style="font-family:'Literata';font-size:14px;font-weight:600;margin-bottom:2px;">Nine Kinds of Silence</div>
+          <div style="font-size:12px;color:var(--ink-faint);">J. Okafor</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

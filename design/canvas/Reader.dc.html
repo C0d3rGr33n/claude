@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Manrope:wght@400;500;600;700;800&display=swap">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  :root{
+    --bg:oklch(0.13 0.022 250);
+    --bg-2:oklch(0.18 0.025 250);
+    --line:oklch(0.4 0.02 260 / 0.3);
+    --ink:oklch(0.94 0.012 85);
+    --ink-dim:oklch(0.72 0.02 260);
+    --ink-faint:oklch(0.5 0.02 260);
+    --amber:oklch(0.78 0.14 70);
+    --amber-ink:oklch(0.2 0.03 70);
+    --violet:oklch(0.66 0.15 300);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(60px,-40px) scale(1.1);}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-70px,50px) scale(1.08);}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(30px,60px) scale(1.05);}}
+  @keyframes floatUp{0%{transform:translateY(0);opacity:0;}12%{opacity:.8;}88%{opacity:.2;}100%{transform:translateY(-780px);opacity:0;}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 oklch(0.78 0.14 70 / .5);}50%{box-shadow:0 0 0 6px oklch(0.78 0.14 70 / 0);}}
+  .particle{position:absolute;bottom:-20px;border-radius:50%;animation:floatUp linear infinite;}
+  .icon-btn{width:38px;height:38px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--ink-dim);cursor:pointer;}
+  .icon-btn:hover{color:var(--ink);background:var(--bg-2);}
+  .nav-btn{display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Manrope';}
+  .nav-btn.primary{background:var(--amber);color:var(--amber-ink);border:none;}
+  .nav-btn.ghost{background:transparent;color:var(--ink-dim);border:1px solid var(--line);}
+  .nav-btn.ghost:hover{color:var(--ink);border-color:var(--ink-faint);}
+</style>
+</helmet>
+
+<div style="position:relative;background:var(--bg);min-height:960px;overflow:hidden;">
+
+  <!-- ambient depth layers: this is the site's signature motion -->
+  <div style="position:absolute;top:-220px;left:-160px;width:680px;height:680px;background:radial-gradient(circle,oklch(0.68 0.15 300 / .16),transparent 70%);filter:blur(8px);animation:drift1 20s ease-in-out infinite;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-260px;right:-120px;width:760px;height:760px;background:radial-gradient(circle,oklch(0.78 0.14 70 / .12),transparent 70%);filter:blur(8px);animation:drift2 24s ease-in-out infinite;pointer-events:none;"></div>
+  <div style="position:absolute;top:30%;right:12%;width:340px;height:340px;background:radial-gradient(circle,oklch(0.66 0.15 230 / .14),transparent 70%);filter:blur(6px);animation:drift3 17s ease-in-out infinite;pointer-events:none;"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;">
+    <div class="particle" style="left:8%;width:3px;height:3px;background:var(--amber);box-shadow:0 0 6px var(--amber);animation-duration:14s;animation-delay:0s;"></div>
+    <div class="particle" style="left:20%;width:2px;height:2px;background:var(--violet);box-shadow:0 0 6px var(--violet);animation-duration:11s;animation-delay:3s;"></div>
+    <div class="particle" style="left:34%;width:4px;height:4px;background:var(--amber);box-shadow:0 0 8px var(--amber);animation-duration:16s;animation-delay:1.4s;"></div>
+    <div class="particle" style="left:47%;width:2px;height:2px;background:var(--violet);box-shadow:0 0 5px var(--violet);animation-duration:12s;animation-delay:4.2s;"></div>
+    <div class="particle" style="left:61%;width:3px;height:3px;background:var(--amber);box-shadow:0 0 7px var(--amber);animation-duration:15s;animation-delay:0.8s;"></div>
+    <div class="particle" style="left:73%;width:3px;height:3px;background:var(--violet);box-shadow:0 0 6px var(--violet);animation-duration:13s;animation-delay:2.6s;"></div>
+    <div class="particle" style="left:85%;width:2px;height:2px;background:var(--amber);box-shadow:0 0 5px var(--amber);animation-duration:18s;animation-delay:5s;"></div>
+    <div class="particle" style="left:93%;width:4px;height:4px;background:var(--violet);box-shadow:0 0 8px var(--violet);animation-duration:14s;animation-delay:1.9s;"></div>
+  </div>
+
+  <!-- top bar -->
+  <div style="position:relative;display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid var(--line);background:oklch(0.13 0.022 250 / 0.7);backdrop-filter:blur(10px);">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <span class="icon-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </span>
+      <div>
+        <div style="font-size:12px;color:var(--ink-faint);">The Glass Orbit</div>
+        <div style="font-size:14px;font-weight:600;">Chapter 12 · The Signal Between Stars</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:24px;">
+      <div style="width:160px;height:3px;background:var(--bg-2);border-radius:2px;overflow:hidden;">
+        <div style="width:34%;height:100%;background:var(--amber);"></div>
+      </div>
+      <span style="font-size:12px;color:var(--ink-faint);">34%</span>
+      <span class="icon-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </span>
+    </div>
+  </div>
+
+  <!-- progress rail -->
+  <div style="position:absolute;left:28px;top:50%;transform:translateY(-50%);width:2px;height:280px;background:var(--line);z-index:5;">
+    <div style="position:absolute;left:-3px;top:34%;width:8px;height:8px;border-radius:50%;background:var(--amber);animation:pulse 2.4s ease-in-out infinite;"></div>
+  </div>
+
+  <!-- reading column -->
+  <div style="position:relative;max-width:680px;margin:0 auto;padding:64px 24px 120px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin-bottom:14px;">Chapter Twelve</div>
+    <h1 style="font-family:'Libre Caslon Display',serif;font-weight:400;font-size:36px;line-height:1.15;margin:0 0 40px;">The Signal Between Stars</h1>
+
+    <div style="font-family:'Literata',serif;font-size:19px;line-height:1.85;color:oklch(0.88 0.012 85);">
+      <p style="margin:0 0 26px;">Kesia found the second message the way she found most things that mattered: by accident, at 3 a.m., when the station's systems ran quiet enough to hear themselves think. It sat in the maintenance log like a splinter — eleven seconds of telemetry from a Meridian that hadn't launched yet, timestamped four years in the future.</p>
+      <p style="margin:0 0 26px;">She read it twice before she let herself believe it. Then a third time, because belief was not the same as understanding, and understanding was what she needed if she was going to keep this from Director Ashworth for even one more day.</p>
+      <p style="margin:0 0 26px;"><em>Don't trust the orbit,</em> the message said, in her own handwriting. <em>It isn't yours anymore.</em></p>
+      <p style="margin:0 0 26px;">Outside the viewport, Earth turned its slow blue shoulder toward the dark, indifferent to the fact that somewhere above it, a version of Kesia who had already made her choice was trying to warn the version who hadn't. She pressed her palm to the glass, half expecting to feel the future on the other side of it — some faint warmth, some proof. There was only cold.</p>
+      <p style="margin:0 0 26px;">Ninety days, the station's countdown read. Ninety days until Meridian's next long-burn maneuver, the one that would carry them past the point where a message like this could still arrive in time to matter.</p>
+      <p style="margin:0;">She had ninety days to decide whether the woman writing to her from the future was a warning or a threat — and whether there was still a difference.</p>
+    </div>
+  </div>
+
+  <!-- bottom nav -->
+  <div style="position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-top:1px solid var(--line);background:oklch(0.13 0.022 250 / 0.85);backdrop-filter:blur(10px);">
+    <span class="nav-btn ghost">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Chapter 11
+    </span>
+    <span style="font-size:12px;color:var(--ink-faint);">Chapter 12 of 142</span>
+    <span class="nav-btn primary">
+      Chapter 13
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </span>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

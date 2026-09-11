@@ -1,0 +1,12 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 1500, "title": "Landing" },
+    { "file": "Library.dc.html", "x": 1600, "y": 0, "w": 1440, "h": 1500, "title": "Library" },
+    { "file": "NovelDetail.dc.html", "x": 0, "y": 1650, "w": 1440, "h": 1250, "title": "Novel Detail" },
+    { "file": "Reader.dc.html", "x": 1600, "y": 1650, "w": 1440, "h": 1000, "title": "Reader" }
+  ],
+  "annotations": [
+    { "id": "concept-note", "x": -420, "y": 0, "w": 340, "text": "DEPTH — a novel reading platform\n\n\"4D\" concept: layered parallax depth (drifting aurora glows + particle motion behind content), animated cover tilt on hover, and an ambient reading atmosphere that moves without distracting from the text.\n\nFirst design pass, desktop. Literata for reading, Libre Caslon Display for headlines, Manrope for UI." }
+  ],
+  "launch": { "view": "canvas" }
+}

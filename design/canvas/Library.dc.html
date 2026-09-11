@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Manrope:wght@400;500;600;700;800&display=swap">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  :root{
+    --bg:oklch(0.15 0.02 260);
+    --bg-2:oklch(0.19 0.025 260);
+    --bg-3:oklch(0.24 0.025 260);
+    --line:oklch(0.4 0.02 260 / 0.35);
+    --ink:oklch(0.94 0.01 85);
+    --ink-dim:oklch(0.74 0.02 260);
+    --ink-faint:oklch(0.54 0.02 260);
+    --amber:oklch(0.78 0.14 70);
+    --amber-ink:oklch(0.2 0.03 70);
+    --violet:oklch(0.68 0.15 300);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;}
+  a{color:var(--amber);text-decoration:none;}
+  h1,h2{font-family:'Libre Caslon Display',serif;font-weight:400;margin:0;}
+  .navlink{color:var(--ink-dim);font-size:14px;font-weight:600;}
+  .navlink:hover{color:var(--ink);}
+  .btn-primary{background:var(--amber);color:var(--amber-ink);border:none;padding:10px 22px;border-radius:4px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Manrope';}
+  .chip{border:1px solid var(--line);color:var(--ink-dim);padding:9px 18px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s;}
+  .chip:hover{color:var(--ink);border-color:var(--ink-faint);}
+  .chip.active{background:var(--amber);color:var(--amber-ink);border-color:var(--amber);}
+  .card{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:transform .25s,border-color .25s;}
+  .card:hover{transform:translateY(-6px);border-color:var(--ink-faint);}
+  .card:hover .card-cover{transform:perspective(600px) rotateY(-6deg) scale(1.03);}
+  .card-cover{height:230px;transition:transform .4s;display:flex;align-items:flex-end;padding:16px;}
+  .badge{position:absolute;top:12px;right:12px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 9px;border-radius:3px;background:oklch(0.15 0.02 260 / 0.75);backdrop-filter:blur(4px);color:var(--ink);}
+  .star{color:var(--amber);}
+</style>
+</helmet>
+
+<div style="background:var(--bg);min-height:100vh;">
+
+  <nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:22px 64px;background:oklch(0.15 0.02 260 / 0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);">
+    <div style="display:flex;align-items:center;gap:48px;">
+      <span style="font-family:'Libre Caslon Display',serif;font-size:24px;letter-spacing:.02em;">DEPTH</span>
+      <div style="display:flex;gap:32px;">
+        <a href="#" class="navlink">Discover</a>
+        <a href="#" class="navlink" style="color:var(--ink);">Library</a>
+        <a href="#" class="navlink">Genres</a>
+        <a href="#" class="navlink">Rankings</a>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="#" class="navlink">Sign in</a>
+      <button class="btn-primary">Get Started</button>
+    </div>
+  </nav>
+
+  <header style="padding:56px 64px 32px;border-bottom:1px solid var(--line);">
+    <h1 style="font-size:40px;margin-bottom:10px;">Library</h1>
+    <p style="color:var(--ink-dim);font-size:16px;margin:0 0 28px;font-family:'Literata',serif;">1,240 stories, endless depths.</p>
+    <div style="display:flex;gap:16px;align-items:center;">
+      <div style="flex:1;max-width:420px;display:flex;align-items:center;gap:10px;background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:12px 16px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--ink-faint);flex-shrink:0;"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span style="color:var(--ink-faint);font-size:14px;">Search titles, authors, tags…</span>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--ink-dim);font-size:13px;font-weight:600;">
+        Sort by
+        <span style="display:flex;align-items:center;gap:4px;color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:8px 12px;">
+          Trending
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <div style="display:flex;gap:12px;padding:24px 64px;overflow-x:auto;border-bottom:1px solid var(--line);">
+    <span class="chip active">All</span>
+    <span class="chip">Fantasy</span>
+    <span class="chip">Sci-Fi</span>
+    <span class="chip">Romance</span>
+    <span class="chip">Horror</span>
+    <span class="chip">Mystery</span>
+    <span class="chip">LitRPG</span>
+    <span class="chip">Slice of Life</span>
+    <span class="chip">Gothic</span>
+  </div>
+
+  <section style="padding:40px 64px 80px;">
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;">
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Ongoing</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 230),oklch(0.26 0.09 230));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:oklch(0.95 0.01 230);">The Glass Orbit</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">Mira Voss · Sci-Fi</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.8</span>
+            <span>142 chapters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Complete</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 340),oklch(0.26 0.09 340));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:oklch(0.95 0.01 340);">Widow of the Salt Coast</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">Renata Kwan · Gothic Romance</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.9</span>
+            <span>58 chapters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Ongoing</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 190),oklch(0.26 0.09 190));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:oklch(0.95 0.01 190);">Nine Kinds of Silence</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">J. Okafor · Literary Fiction</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.7</span>
+            <span>26 chapters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Ongoing</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 110),oklch(0.26 0.09 110));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:oklch(0.95 0.01 110);">The Cartographer's Debt</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">Elian Reyes · Fantasy</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.6</span>
+            <span>77 chapters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Ongoing</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 300),oklch(0.26 0.09 300));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:oklch(0.95 0.01 300);">Static &amp; Starlight</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">Priya Anand · Sci-Fi Romance</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.8</span>
+            <span>63 chapters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Complete</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 70),oklch(0.26 0.09 70));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:var(--amber-ink);">The Last Ember King</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">Torin Blackwood · Epic Fantasy</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.9</span>
+            <span>210 chapters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Ongoing</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 160),oklch(0.26 0.09 160));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:oklch(0.95 0.01 160);">Paper Moths</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">Ada Lindqvist · Magical Realism</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.5</span>
+            <span>61 chapters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="position:relative;">
+        <span class="badge">Ongoing</span>
+        <div class="card-cover" style="background:linear-gradient(150deg,oklch(0.5 0.14 20),oklch(0.26 0.09 20));">
+          <span style="font-family:'Libre Caslon Display';font-size:19px;color:oklch(0.95 0.01 20);">Hollow Constellations</span>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-size:13px;color:var(--ink-faint);margin-bottom:8px;">Marcus Vane · Dystopian</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-dim);">
+            <span><span class="star">★</span> 4.6</span>
+            <span>40 chapters</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>
