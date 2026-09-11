@@ -1,0 +1,4 @@
+# Generated Claude Design canvas payloads (regenerable from design/canvas/*.dc.html
+# via the design skill's seed-canvas.mjs; published live as Artifacts instead of
+# being checked into git — they bundle a ~2MB editor runtime per file).
+design/*.html
