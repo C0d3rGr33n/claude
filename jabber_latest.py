@@ -4,6 +4,7 @@
 Fetches with browser-like `requests` headers first; if Akamai returns an
 "Access Denied" page, falls back to Playwright (chromium).
 """
+import argparse
 import io
 import os
 import re
@@ -136,8 +137,8 @@ def vkey(v):
     return tuple(int(x) for x in v.split(".")) + (0,) * (3 - v.count(".") - 1)
 
 
-def find_latest(html, base):
-    """Return (version, url) of the highest-versioned release-notes link."""
+def find_releases(html, base):
+    """Return {version: url} for every 'Cisco Jabber Release Notes for X.Y' link."""
     found = {}
     for href, text in LINK_RE.findall(html):
         m = TITLE_RE.search(strip_tags(text))
@@ -145,7 +146,21 @@ def find_latest(html, base):
             found.setdefault(m.group(1), urljoin(base, href.replace("&amp;", "&")))
     if not found:
         die("no 'Cisco Jabber Release Notes for X.Y' links found on index page")
-    best = max(found, key=vkey)
+    return found
+
+
+def matches(version, prefix):
+    """True if version starts with prefix component-wise ('15' ~ 15.x, '15.2' ~ 15.2.x)."""
+    return not prefix or version.split(".")[:len(prefix.split("."))] == prefix.split(".")
+
+
+def find_latest(found, prefix=None):
+    """Return (version, url) of the highest version matching prefix."""
+    pool = [v for v in found if matches(v, prefix)]
+    if not pool:
+        die(f"no release matching '{prefix}'. Available: "
+            + ", ".join(sorted(found, key=vkey, reverse=True)))
+    best = max(pool, key=vkey)
     return best, found[best]
 
 
@@ -179,8 +194,11 @@ def extract_builds(text):
 
 
 # ---------- main ----------
-def run(fetcher):
-    version, url = find_latest(fetcher.get(INDEX_URL).decode("utf-8", "replace"), INDEX_URL)
+def run(fetcher, prefix=None, list_only=False):
+    found = find_releases(fetcher.get(INDEX_URL).decode("utf-8", "replace"), INDEX_URL)
+    if list_only:
+        return found
+    version, url = find_latest(found, prefix)
     body = fetcher.get(url)
     if not body.startswith(b"%PDF"):
         pdf_url = find_pdf_link(body.decode("utf-8", "replace"), url)
@@ -192,7 +210,19 @@ def run(fetcher):
     return version, url, extract_builds(pdf_text(body))
 
 
+def parse_args():
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("version", nargs="?",
+                    help="only consider this major/minor line, e.g. 14 or 15.2 (default: all)")
+    ap.add_argument("--list", action="store_true", help="list all versions found and exit")
+    a = ap.parse_args()
+    if a.version and not re.fullmatch(r"\d+(\.\d+){0,2}", a.version):
+        ap.error("version must look like 15, 15.2 or 15.2.1")
+    return a
+
+
 def main():
+    args = parse_args()
     fetchers = [RequestsFetcher, PlaywrightFetcher]
     if has_display():
         fetchers.append(lambda: PlaywrightFetcher(headless=False))
@@ -204,7 +234,7 @@ def main():
             print(f"[skip] {e}", file=sys.stderr)
             continue
         try:
-            version, pdf_url, builds = run(f)
+            result = run(f, args.version, args.list)
             break
         except Blocked as e:
             last = e
@@ -220,7 +250,13 @@ def main():
             "try from a home/office network, or with a visible browser (needs a display).\n"
             f"Page start:\n{snippet}")
 
-    print(f"Latest version: {version}\nPDF URL: {pdf_url}\n")
+    if args.list:
+        for v in sorted(result, key=vkey, reverse=True):
+            print(f"{v:<10}{result[v]}")
+        return
+    version, pdf_url, builds = result
+    label = f"Latest {args.version}.x version" if args.version else "Latest version"
+    print(f"{label}: {version}\nPDF URL: {pdf_url}\n")
     w = max(len(p) for p in PLATFORMS)
     print(f"{'Platform':<{w + 2}}Build\n{'-' * (w + 2)}{'-' * 16}")
     for p in ("Windows", "Mac", "iOS", "Android", "VDI"):
