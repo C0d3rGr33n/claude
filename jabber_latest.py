@@ -55,7 +55,7 @@ class RequestsFetcher:
     def get(self, url):
         r = self.s.get(url, timeout=30)
         if is_blocked(r.status_code, r.content):
-            raise Blocked(url)
+            raise Blocked(url, r.content)
         r.raise_for_status()
         return r.content
 
@@ -64,31 +64,55 @@ class RequestsFetcher:
 
 
 class PlaywrightFetcher:
-    name = "playwright"
+    """Chromium via Playwright; tweaked to look less like automation to Akamai."""
+    STEALTH_JS = ("Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+                  "window.chrome = window.chrome || {runtime: {}};")
 
-    def __init__(self):
+    def __init__(self, headless=True):
         from playwright.sync_api import sync_playwright
+        self.name = "playwright" + ("" if headless else " (headed)")
         self._pw = sync_playwright().start()
-        try:
-            self._browser = self._pw.chromium.launch(headless=True)
-        except Exception:  # bundled browser missing; try a system chromium
-            exe = next((c for c in CHROMIUM_PATHS if os.path.exists(c)), None)
-            if not exe:
-                raise
-            self._browser = self._pw.chromium.launch(headless=True, executable_path=exe)
-        ctx = self._browser.new_context(user_agent=HEADERS["User-Agent"],
-                                        locale="en-US")
+        opts = dict(headless=headless, args=["--disable-blink-features=AutomationControlled"])
+        self._browser = None
+        # Prefer real Chrome (best fingerprint), then bundled, then a system chromium.
+        attempts = [dict(channel="chrome"), {}] + [dict(executable_path=c)
+                                                    for c in CHROMIUM_PATHS if os.path.exists(c)]
+        for extra in attempts:
+            try:
+                self._browser = self._pw.chromium.launch(**opts, **extra)
+                break
+            except Exception as e:
+                err = e
+        if not self._browser:
+            self._pw.stop()
+            raise RuntimeError(f"could not launch chromium: {err}")
+        ctx = self._browser.new_context(locale="en-US", viewport={"width": 1366, "height": 900},
+                                        extra_http_headers={"Accept-Language": HEADERS["Accept-Language"]})
+        ctx.add_init_script(self.STEALTH_JS)
         self.page = ctx.new_page()
+        self._warmed = False
+
+    def _warm_up(self, url):
+        # Visit the site root first so Akamai's sensor script can set its cookies.
+        if not self._warmed and "cisco.com" in url:
+            self._warmed = True
+            try:
+                self.page.goto("https://www.cisco.com/", wait_until="load", timeout=60000)
+                self.page.wait_for_timeout(3000)
+            except Exception:
+                pass
 
     def get(self, url):
+        self._warm_up(url)
         if url.lower().split("?")[0].endswith(".pdf"):
-            r = self.page.request.get(url, headers={"Referer": INDEX_URL})
+            r = self.page.request.get(url, headers={"Referer": self.page.url or INDEX_URL})
             status, body = r.status, r.body()
         else:
             resp = self.page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            self.page.wait_for_timeout(1500)
             status, body = (resp.status if resp else 0), self.page.content().encode()
         if is_blocked(status, body):
-            raise Blocked(url)
+            raise Blocked(url, body)
         if status >= 400:
             raise RuntimeError(f"HTTP {status} for {url}")
         return body
@@ -96,6 +120,11 @@ class PlaywrightFetcher:
     def close(self):
         self._browser.close()
         self._pw.stop()
+
+
+def has_display():
+    return sys.platform in ("win32", "darwin") or bool(os.environ.get("DISPLAY")
+                                                        or os.environ.get("WAYLAND_DISPLAY"))
 
 
 # ---------- parsing ----------
@@ -164,19 +193,32 @@ def run(fetcher):
 
 
 def main():
-    for cls in (RequestsFetcher, PlaywrightFetcher):
-        f = cls()
+    fetchers = [RequestsFetcher, PlaywrightFetcher]
+    if has_display():
+        fetchers.append(lambda: PlaywrightFetcher(headless=False))
+    last = None
+    for make in fetchers:
+        try:
+            f = make()
+        except RuntimeError as e:
+            print(f"[skip] {e}", file=sys.stderr)
+            continue
         try:
             version, pdf_url, builds = run(f)
             break
         except Blocked as e:
-            print(f"[{f.name}] Access Denied at {e}; falling back...", file=sys.stderr)
+            last = e
+            print(f"[{f.name}] Access Denied at {e.args[0]}; falling back...", file=sys.stderr)
         except (requests.RequestException, RuntimeError) as e:
             die(f"network error via {f.name}: {e}")
         finally:
             f.close()
     else:
-        die("blocked by Akamai even with Playwright")
+        snippet = last.args[1][:400].decode("utf-8", "replace") if last else ""
+        die("blocked by Akamai with every method.\n"
+            "Akamai often blocks by IP reputation (VPN, cloud or datacenter IPs); "
+            "try from a home/office network, or with a visible browser (needs a display).\n"
+            f"Page start:\n{snippet}")
 
     print(f"Latest version: {version}\nPDF URL: {pdf_url}\n")
     w = max(len(p) for p in PLATFORMS)
