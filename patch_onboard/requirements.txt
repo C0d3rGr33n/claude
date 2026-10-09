@@ -1,0 +1,6 @@
+requests>=2.31
+beautifulsoup4>=4.12
+pypsrp>=0.8
+olefile>=0.47
+# optional: JS-rendered download pages (--render)
+# playwright>=1.40

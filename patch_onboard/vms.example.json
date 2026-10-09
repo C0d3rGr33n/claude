@@ -1,0 +1,30 @@
+{
+  "vms": [
+    {
+      "name": "win11-x64",
+      "arch": "x64",
+      "host": "192.168.56.101",
+      "username": "Administrator",
+      "password_env": "WIN11_PASS",
+      "hypervisor": "vmware",
+      "vm_id": "C:/VMs/win11-x64/win11-x64.vmx",
+      "clean_snapshot": "clean"
+    },
+    {
+      "name": "win10-x86",
+      "arch": "x86",
+      "host": "192.168.56.102",
+      "username": "Administrator",
+      "password_env": "WIN10_PASS",
+      "hypervisor": "hyperv",
+      "vm_id": "win10-x86",
+      "clean_snapshot": "clean"
+    }
+  ],
+  "settings": {
+    "install_timeout": 1200,
+    "settle_timeout": 300,
+    "reboot_if_required": true,
+    "max_detail_files": 5000
+  }
+}
